@@ -17,6 +17,6 @@ archive can be seen on a comment (http://boulabiar.net/box2d/Box2Dm.7z)
 ## Binary
 https://www.dropbox.com/s/itdj4b4s0aagfex/QBox2D.exe
 
-The above executable was built under VS2012... therefore update your VC++ Runtime if it asks for a dll
+The above executable was built under Qt4.8.4/VS2012... therefore update your VC++ Runtime if it asks for a dll
 
 Use this link (http://www.microsoft.com/en-us/download/details.aspx?id=30679) or google it :)
