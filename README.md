@@ -11,8 +11,8 @@ This program was based on Erin Catto's Box2D (http://www.box2d.org) API
 
 Angle computation was based on Thorbjørn Lindeijer's Box2D QML Plugin (https://github.com/bjorn/qml-box2d)
 
-Simulation was based on "timerEvent" implementation found at a blog at http://blog.qt.digia.com/blog/2010/02/26/qt-box2d-is-easy/ wherein an
-archive can be seen on a comment (http://boulabiar.net/box2d/Box2Dm.7z)
+Simulation was based on "timerEvent" implementation found at Andreas Aardal Hanssen's blog at http://blog.qt.digia.com/blog/2010/02/26/qt-box2d-is-easy/ wherein an
+archive can be seen on one of comments (http://boulabiar.net/box2d/Box2Dm.7z).
 
 ## Binary
 https://www.dropbox.com/s/itdj4b4s0aagfex/QBox2D.exe
