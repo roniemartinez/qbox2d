@@ -75,9 +75,6 @@ void QBox2DWorld::timerEvent(QTimerEvent *event)
             //e.g. subclassing a QGraphicsItem for a specific fixture
             QList<b2Body*> bodyList = getBodyList();
             foreach (b2Body *body, bodyList) {
-                b2Vec2 position = body->GetPosition();
-                float32 angle = body->GetAngle();
-                qreal newRotation = -(angle * 360.0) / (2 * b2_pi);
                 if (!bodyManager.contains(body)) {
                     b2Fixture* fixture = body->GetFixtureList();
                     QList<b2Fixture *> fixtureList;
@@ -85,24 +82,24 @@ void QBox2DWorld::timerEvent(QTimerEvent *event)
                         fixtureList << fixture;
                         fixture = fixture->GetNext();
                     }
-                    QGraphicsItemGroup *qItem = new QGraphicsItemGroup;
+                    QBox2DBody *qItem = new QBox2DBody(body);
                     addItem(qItem);
                     foreach (fixture, fixtureList) {
                         b2Shape *qb2Shape = fixture->GetShape();
                         switch (qb2Shape->GetType()) {
                         case 0:
                         {
-                            QGraphicsEllipseItem* item = new QGraphicsEllipseItem;
+                            //FIXME: doesn't rotate since the brushStyle stays the same
                             b2CircleShape *qb2CircleShape = dynamic_cast<b2CircleShape*>(qb2Shape);
                             float32 qRadius = qb2CircleShape->m_radius*sizeMultiplier;
-                            QRectF rect(-qRadius,-qRadius,2*qRadius,2*qRadius);
-                            item->setRect(rect);
+                            QGraphicsEllipseItem* item =
+                                    new QGraphicsEllipseItem(-qRadius,-qRadius,2*qRadius,2*qRadius);
                             qItem->addToGroup(item);
-                            //FIXME: by setting the style, the circle doesn't seem to rotate
                             item->setBrush(QBrush(Qt::green/*, Qt::HorPattern*/));
                         } break;
                         case 1:
                         {
+                            //FIXME: doesn't rotate
                             QGraphicsLineItem *item =new QGraphicsLineItem;
                             b2EdgeShape *qb2EdgeShape = dynamic_cast<b2EdgeShape*>(qb2Shape);
                             b2Vec2 v1 = qb2EdgeShape->m_vertex1;
@@ -123,19 +120,22 @@ void QBox2DWorld::timerEvent(QTimerEvent *event)
                             }
                             item->setPolygon(polygon);
                             qItem->addToGroup(item);
-                            item->setBrush(QBrush(Qt::blue /*, Qt::HorPattern*/));
+                            item->setBrush(QBrush(Qt::blue/*, Qt::HorPattern*/));
+                        } break;
+                        case 3: //for chain shape
+                        {
+
+                        } break;
+                        default:
+                        {
+
                         } break;
                         }
-                        bodyManager.insertMulti(body, qItem);
                     }
-                    bodyManager[body]->setPos(position.x*sizeMultiplier, position.y*-sizeMultiplier);
-                    if (!qFuzzyCompare(bodyManager[body]->rotation(), newRotation))
-                        bodyManager[body]->setRotation(newRotation);
+                    bodyManager.insert(body, qItem);
                 }
-                bodyManager[body]->setPos(position.x*sizeMultiplier, position.y*-sizeMultiplier);
-                if (!qFuzzyCompare(bodyManager[body]->rotation(), newRotation))
-                    bodyManager[body]->setRotation(newRotation);
             }
+            update();
     }
     QObject::timerEvent(event);
 }

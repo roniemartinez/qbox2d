@@ -35,6 +35,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2ContactManager.h>
 #include "qbox2dcommon.h"
+#include "qbox2dbody.h"
 
 
 static float32 timeStep = 1.0f / 60.0f;
@@ -169,7 +170,7 @@ protected:
 private:
     b2World *q_b2World;
     int q_timerId;
-    QHash<b2Body*, QGraphicsItem*> bodyManager;
+    QHash<b2Body*, QBox2DBody*> bodyManager;
     
 };
 

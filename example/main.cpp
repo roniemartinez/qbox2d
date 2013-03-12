@@ -79,6 +79,11 @@ int main(int argc, char *argv[])
     b2Vec2 v1(-10.0f, 0.0f), v2(-2.0f, -2.0f);
     b2EdgeShape shape;
     shape.Set(v1, v2);
+    b2FixtureDef fixtureDef1;
+    fixtureDef1.shape = &shape;
+    fixtureDef1.density = 1.0f;
+    fixtureDef1.friction = 0.3f;
+    fixtureDef1.restitution = 0.6f;
     ground->CreateFixture(&shape, 1.0f);
 
 

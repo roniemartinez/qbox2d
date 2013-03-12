@@ -11,14 +11,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QBox2D
 TEMPLATE = app
 
-include(box2d.pri)
+include(../box2d.pri)
 
 SOURCES += main.cpp\
-    qbox2dworld.cpp
+    ../qbox2dworld.cpp \
+    ../qbox2dbody.cpp
 
 HEADERS  += \
-    qbox2dworld.h \
-    qbox2dcommon.h
+    ../qbox2dworld.h \
+    ../qbox2dcommon.h \
+    ../qbox2dbody.h
 
 OTHER_FILES += \
-    README.md
+    ../README.md
