@@ -34,13 +34,12 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Dynamics/b2ContactManager.h>
+#include <Box2D/Dynamics/Joints/b2GearJoint.h>
+#include <Box2D/Dynamics/Joints/b2PrismaticJoint.h>
+#include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
 #include "qbox2dcommon.h"
 #include "qbox2dbody.h"
 
-
-static float32 timeStep = 1.0f / 60.0f;
-static int32 velocityIterations = 6;
-static int32 positionIterations = 2;
 
 class QBox2DWorld : public QGraphicsScene
 {
@@ -53,7 +52,12 @@ public:
     void start() {
         q_timerId = startTimer(timeStep*1000);
     }
-    b2Body* createBody(const b2BodyDef *qb2BodyDef);
+
+    void pause() {
+        killTimer(q_timerId);
+    }
+
+    QBox2DBody* createBody(const b2BodyDef *qb2BodyDef);
     void destroyBody(b2Body *qb2Body) {
         q_b2World->DestroyBody(qb2Body);
     }
@@ -163,6 +167,11 @@ public:
 signals:
 
 public slots:
+    void simulate(bool flag) {
+        if (flag)
+            start();
+        else pause();
+    }
 
 protected:
     void timerEvent(QTimerEvent *event);
@@ -170,7 +179,7 @@ protected:
 private:
     b2World *q_b2World;
     int q_timerId;
-    QHash<b2Body*, QBox2DBody*> bodyManager;
+    QHash<b2Joint*, QGraphicsLineItem*> jointManager;
     
 };
 

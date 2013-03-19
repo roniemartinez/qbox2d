@@ -21,17 +21,17 @@ QBox2DWorld::QBox2DWorld(const b2Vec2 &gravity, QObject *parent) :
     QGraphicsScene(parent)
 {
     q_b2World = new b2World(gravity);
+    setItemIndexMethod(QGraphicsScene::NoIndex);
+    setBackgroundBrush(Qt::white);
 }
 
-b2Body *QBox2DWorld::createBody(const b2BodyDef *qb2BodyDef)
+QBox2DBody* QBox2DWorld::createBody(const b2BodyDef *qb2BodyDef)
 {
-    return q_b2World->CreateBody(qb2BodyDef);
-    //addItem(qBox2DBody);
-
-    //return qBox2DBody;
+    QBox2DBody* qb2Body = new QBox2DBody(q_b2World->CreateBody(qb2BodyDef));
+    addItem(qb2Body);
+    return qb2Body;
 }
 
-//will changed list from b2 to QBox2D prefix
 QList<b2Body*> QBox2DWorld::getBodyList()
 {
     QList<b2Body*> qb2BodyList;
@@ -69,72 +69,23 @@ void QBox2DWorld::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == q_timerId) {
             q_b2World->Step(timeStep, velocityIterations, positionIterations);
-            //update();
-            //update is required so that all QBox2DBody and the like will repaint...
-            //use this ONLY if you have a separate implementation of the items below
-            //e.g. subclassing a QGraphicsItem for a specific fixture
-            QList<b2Body*> bodyList = getBodyList();
-            foreach (b2Body *body, bodyList) {
-                if (!bodyManager.contains(body)) {
-                    b2Fixture* fixture = body->GetFixtureList();
-                    QList<b2Fixture *> fixtureList;
-                    while (fixture != NULL) {
-                        fixtureList << fixture;
-                        fixture = fixture->GetNext();
-                    }
-                    QBox2DBody *qItem = new QBox2DBody(body);
-                    addItem(qItem);
-                    foreach (fixture, fixtureList) {
-                        b2Shape *qb2Shape = fixture->GetShape();
-                        switch (qb2Shape->GetType()) {
-                        case 0:
-                        {
-                            //FIXME: doesn't rotate since the brushStyle stays the same
-                            b2CircleShape *qb2CircleShape = dynamic_cast<b2CircleShape*>(qb2Shape);
-                            float32 qRadius = qb2CircleShape->m_radius*sizeMultiplier;
-                            QGraphicsEllipseItem* item =
-                                    new QGraphicsEllipseItem(-qRadius,-qRadius,2*qRadius,2*qRadius);
-                            qItem->addToGroup(item);
-                            item->setBrush(QBrush(Qt::green/*, Qt::HorPattern*/));
-                        } break;
-                        case 1:
-                        {
-                            //FIXME: doesn't rotate
-                            QGraphicsLineItem *item =new QGraphicsLineItem;
-                            b2EdgeShape *qb2EdgeShape = dynamic_cast<b2EdgeShape*>(qb2Shape);
-                            b2Vec2 v1 = qb2EdgeShape->m_vertex1;
-                            b2Vec2 v2 = qb2EdgeShape->m_vertex2;
-                            item->setLine(v1.x*sizeMultiplier, v1.y*-sizeMultiplier,
-                                          v2.x*sizeMultiplier, v2.y*-sizeMultiplier);
-                            qItem->addToGroup(item);
-                        } break;
-                        case 2:
-                        {
-                            QGraphicsPolygonItem* item = new QGraphicsPolygonItem;
-                            b2PolygonShape *qb2PolygonShape = dynamic_cast<b2PolygonShape*>(qb2Shape);
-                            int32 vertexCount = qb2PolygonShape->GetVertexCount();
-                            QPolygonF polygon;
-                            for (int i=0; i<vertexCount; ++i) {
-                                b2Vec2 vertex = qb2PolygonShape->GetVertex(i);
-                                polygon << QPointF(vertex.x*sizeMultiplier, vertex.y*-sizeMultiplier);
-                            }
-                            item->setPolygon(polygon);
-                            qItem->addToGroup(item);
-                            item->setBrush(QBrush(Qt::blue/*, Qt::HorPattern*/));
-                        } break;
-                        case 3: //for chain shape
-                        {
-
-                        } break;
-                        default:
-                        {
-
-                        } break;
-                        }
-                    }
-                    bodyManager.insert(body, qItem);
+            QList<b2Joint*> jointList = getJointList();
+            foreach (b2Joint* joint, jointList) {
+                if (jointManager.contains(joint)) {
+                    removeItem(jointManager[joint]);
+                    jointManager.remove(joint);
                 }
+                //FIXME: there are lines (joints) in the testbed example that
+                //cannot be visualized in QBox2DWorld
+                QGraphicsLineItem* line = new QGraphicsLineItem;
+                addItem(line);
+                b2Vec2 a = joint->GetAnchorA();
+                b2Vec2 b = joint->GetAnchorB();
+                line->setLine(a.x*sizeMultiplier,a.y*-sizeMultiplier,
+                              b.x*sizeMultiplier, b.y*-sizeMultiplier);
+                jointManager.insertMulti(joint, line);
             }
+            //update is required so that all QBox2DBody and the like will repaint
             update();
     }
     QObject::timerEvent(event);
