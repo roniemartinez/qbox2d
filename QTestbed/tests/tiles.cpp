@@ -1,39 +1,16 @@
-#include "mainwindow.h"
+#include "tiles.h"
 
-#include <qbox2dbody.h>
-#include <qbox2dworld.h>
-#include "../qbox2dview.h"
-
-#include <QMenu>
-#include <QMenuBar>
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+Tiles::Tiles(const b2Vec2 &gravity, QObject *parent) :
+    QBox2DWorld(gravity, parent)
 {
-    QMenuBar* menuBar = new QMenuBar(this);
-    setMenuBar(menuBar);
-    QMenu* fileMenu = menuBar->addMenu("&File");
-    QAction* simulation = new QAction("&Start/Pause",this);
-    simulation->setCheckable(true);
-    fileMenu->addAction(simulation);
-
-    b2Vec2 gravity(0.0f, -10.0f);
-    QBox2DWorld *qWorld = new QBox2DWorld(gravity);
-    //qWorld->setSceneRect(-5000, -5000, 10000, 10000);
-    QBox2DView *view = new QBox2DView;
-    view->setScene(qWorld);
-    setCentralWidget(view);
-    showMaximized();
-    QObject::connect(simulation, SIGNAL(toggled(bool)), qWorld, SLOT(simulate(bool)));
-
-
     //modified codes taken from Tile example
+    //FIXME: has performance problem when "warm starting" is unchecked due to many repaints
     int32 m_fixtureCount = 0;
     {
         float32 a = 0.5f;
         b2BodyDef bd;
         bd.position.y = -a;
-        QBox2DBody* ground = qWorld->createBody(&bd);
+        QBox2DBody* ground  = createBody(&bd);
 
 #if 1
         int32 N = 200;
@@ -102,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
                 //	bd.allowSleep = true;
                 //}
 
-                QBox2DBody* body = qWorld->createBody(&bd);
+                QBox2DBody* body  = createBody(&bd);
                 body->createFixture(&shape, 5.0f);
                 ++m_fixtureCount;
                 y += deltaY;
@@ -111,9 +88,4 @@ MainWindow::MainWindow(QWidget *parent)
             x += deltaX;
         }
     }
-}
-
-MainWindow::~MainWindow()
-{
-    
 }

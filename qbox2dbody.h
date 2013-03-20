@@ -40,8 +40,8 @@ public:
         return q_b2Body;
     }
 
-    b2Fixture* createFixture(const b2Shape* shape, float32 density, const QBrush& brush = QBrush(Qt::gray));
-    b2Fixture* createFixture(const b2FixtureDef* def, const QBrush &brush = QBrush(Qt::gray));
+    b2Fixture* createFixture(const b2Shape* shape, float32 density, const QBrush& brush = QBrush(Qt::green));
+    b2Fixture* createFixture(const b2FixtureDef* def, const QBrush &brush = QBrush(Qt::green));
     void destroyFixture (b2Fixture *fixture) {
         removeFromGroup(q_b2FixtureManager[fixture]);
         q_b2FixtureManager.remove(fixture);

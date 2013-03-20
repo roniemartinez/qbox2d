@@ -1,4 +1,7 @@
 # Box2D sources
+
+include(box2d.pri)
+
 INCLUDEPATH += $$PWD
 SOURCES += \
     $$PWD/qbox2dworld.cpp \

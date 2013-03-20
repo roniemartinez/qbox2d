@@ -50,11 +50,12 @@ public:
         delete q_b2World;
     }
     void start() {
-        q_timerId = startTimer(timeStep*1000);
+        q_timerId = startTimer(q_timeStep*1000);
+        q_isRunning = 1;
     }
-
     void pause() {
         killTimer(q_timerId);
+        q_isRunning = 0;
     }
 
     QBox2DBody* createBody(const b2BodyDef *qb2BodyDef);
@@ -164,6 +165,43 @@ public:
         return q_b2World->GetTreeQuality();
     }
 
+    void setTimeStep(float32 tStep) {
+        killTimer(q_timerId);
+        q_timeStep = tStep;
+        start();
+    }
+    void setVelocityIterations(int32 velIters) {
+        q_velocityIterations = velIters;
+    }
+    void setPositionIterations(int32 posIters) {
+        q_positionIterations = posIters;
+    }
+    bool isRunning() {
+        return q_isRunning;
+    }
+    void step() {
+        q_b2World->Step(q_timeStep, q_velocityIterations, q_positionIterations);
+
+        QList<b2Joint*> jointList = getJointList();
+        foreach (b2Joint* joint, jointList) {
+            if (jointManager.contains(joint)) {
+                removeItem(jointManager[joint]);
+                jointManager.remove(joint);
+            }
+            //FIXME: there are lines (joints) in the testbed example that
+            //cannot be visualized in QBox2DWorld
+            QGraphicsLineItem* line = new QGraphicsLineItem;
+            addItem(line);
+            b2Vec2 a = joint->GetAnchorA();
+            b2Vec2 b = joint->GetAnchorB();
+            line->setLine(a.x*sizeMultiplier,a.y*-sizeMultiplier,
+                          b.x*sizeMultiplier, b.y*-sizeMultiplier);
+            jointManager.insertMulti(joint, line);
+        }
+        //update is required so that all QBox2DBody and the like will repaint
+        update();
+    }
+
 signals:
 
 public slots:
@@ -180,7 +218,9 @@ private:
     b2World *q_b2World;
     int q_timerId;
     QHash<b2Joint*, QGraphicsLineItem*> jointManager;
-    
+    float32 q_timeStep;
+    int32 q_velocityIterations, q_positionIterations;
+    bool q_isRunning;
 };
 
 #endif // QBOX2DWORLD_H

@@ -18,11 +18,14 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <QDebug>
 
 QBox2DWorld::QBox2DWorld(const b2Vec2 &gravity, QObject *parent) :
-    QGraphicsScene(parent)
+    QGraphicsScene(parent), q_isRunning(0)
 {
     q_b2World = new b2World(gravity);
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setBackgroundBrush(Qt::white);
+    q_timeStep = timeStep;
+    q_velocityIterations = velocityIterations;
+    q_positionIterations = positionIterations;
 }
 
 QBox2DBody* QBox2DWorld::createBody(const b2BodyDef *qb2BodyDef)
@@ -68,25 +71,7 @@ QList<b2Joint*> QBox2DWorld::getJointList()
 void QBox2DWorld::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == q_timerId) {
-            q_b2World->Step(timeStep, velocityIterations, positionIterations);
-            QList<b2Joint*> jointList = getJointList();
-            foreach (b2Joint* joint, jointList) {
-                if (jointManager.contains(joint)) {
-                    removeItem(jointManager[joint]);
-                    jointManager.remove(joint);
-                }
-                //FIXME: there are lines (joints) in the testbed example that
-                //cannot be visualized in QBox2DWorld
-                QGraphicsLineItem* line = new QGraphicsLineItem;
-                addItem(line);
-                b2Vec2 a = joint->GetAnchorA();
-                b2Vec2 b = joint->GetAnchorB();
-                line->setLine(a.x*sizeMultiplier,a.y*-sizeMultiplier,
-                              b.x*sizeMultiplier, b.y*-sizeMultiplier);
-                jointManager.insertMulti(joint, line);
-            }
-            //update is required so that all QBox2DBody and the like will repaint
-            update();
+        step();
     }
     QObject::timerEvent(event);
 }

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>610</width>
+    <height>565</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QBox2D</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>610</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="features">
+    <set>QDockWidget::NoDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Tests</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>9</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="testComboBox">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Varying Friction</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tiles</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VaryingRestitution</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Vel Iters</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="velSpinBox">
+         <property name="minimum">
+          <number>0</number>
+         </property>
+         <property name="maximum">
+          <number>999999999</number>
+         </property>
+         <property name="value">
+          <number>8</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Pos Iters</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="posSpinBox">
+         <property name="maximum">
+          <number>999999999</number>
+         </property>
+         <property name="value">
+          <number>3</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Hertz</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="hertzDoubleSpinBox">
+         <property name="maximum">
+          <double>999999999.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>60.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="warmStartingCheckBox">
+       <property name="text">
+        <string>Warm Starting</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="timeOfImpactCheckBox">
+       <property name="text">
+        <string>Time of Impact</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="subSteppingCheckBox">
+       <property name="text">
+        <string>Sub-Stepping</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Draw</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="contactPointsCheckBox">
+          <property name="text">
+           <string>Contact Points</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="pairsCheckBox">
+          <property name="text">
+           <string>Pairs</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QCheckBox" name="contactForcesCheckBox">
+          <property name="text">
+           <string>Contact Forces</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="jointsCheckBox">
+          <property name="text">
+           <string>Joints</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="aabbsCheckBox">
+          <property name="text">
+           <string>AABBs</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QCheckBox" name="statisticsCheckBox">
+          <property name="text">
+           <string>Statistics</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="contactNormalsCheckBox">
+          <property name="text">
+           <string>Contact Normals</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QCheckBox" name="centerOfMassesCheckBox">
+          <property name="text">
+           <string>Center of Masses</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QCheckBox" name="frictionForcesCheckBox">
+          <property name="text">
+           <string>Friction Forces</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="shapesCheckBox">
+          <property name="text">
+           <string>Shapes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QCheckBox" name="profileCheckBox">
+          <property name="text">
+           <string>Profile</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pauseButton">
+       <property name="text">
+        <string>Pause</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="singleStepButton">
+       <property name="text">
+        <string>Single Step</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="restartButton">
+       <property name="text">
+        <string>Restart</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="quitButton">
+       <property name="text">
+        <string>Quit</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
