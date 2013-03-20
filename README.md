@@ -15,8 +15,14 @@ Simulation was based on "timerEvent" implementation found at a blog at http://bl
 
 ## Binary
 
+First program I coded
+
 https://www.dropbox.com/s/itdj4b4s0aagfex/QBox2D.exe
 
-The above executable was built under Qt4.8.4/VS2012... therefore update your VC++ Runtime if it asks for a dll
+QTestbed (incomplete implementation of Testbed)
+
+https://www.dropbox.com/s/evvbyfr4a1ryxxf/QTestbed.exe
+
+The above executables were built under Qt4.8.4/VS2012... therefore update your VC++ Runtime if it asks for a dll
 
 Use this link (http://www.microsoft.com/en-us/download/details.aspx?id=30679) or google it :)
