@@ -3,6 +3,7 @@
 QBox2DBody::QBox2DBody(b2Body *qb2Body, QGraphicsItem *parent) :
     QGraphicsItemGroup(parent), q_b2Body(qb2Body)
 {
+    //setFlags(QGraphicsItem::ItemIsSelectable);
 }
 
 void QBox2DBody::processFixture(b2Fixture *qb2Fixture, const QBrush& brush)
@@ -19,7 +20,7 @@ void QBox2DBody::processFixture(b2Fixture *qb2Fixture, const QBrush& brush)
                 new QGraphicsEllipseItem(rect);
         addToGroup(item);
         item->setBrush(brush);
-        q_b2FixtureManager.insertMulti(qb2Fixture, item);
+        q_b2FixtureManager.insert(qb2Fixture, item);
     } break;
     case 1:
     {
@@ -30,7 +31,7 @@ void QBox2DBody::processFixture(b2Fixture *qb2Fixture, const QBrush& brush)
         item->setLine(v1.x*sizeMultiplier, v1.y*-sizeMultiplier,
                       v2.x*sizeMultiplier, v2.y*-sizeMultiplier);
         addToGroup(item);
-        q_b2FixtureManager.insertMulti(qb2Fixture, item);
+        q_b2FixtureManager.insert(qb2Fixture, item);
     } break;
     case 2:
     {
@@ -46,7 +47,7 @@ void QBox2DBody::processFixture(b2Fixture *qb2Fixture, const QBrush& brush)
         item->setPolygon(polygon);
         addToGroup(item);
         item->setBrush(brush);
-        q_b2FixtureManager.insertMulti(qb2Fixture, item);
+        q_b2FixtureManager.insert(qb2Fixture, item);
     } break;
     case 3: //for chain shape
     {
@@ -59,7 +60,7 @@ void QBox2DBody::processFixture(b2Fixture *qb2Fixture, const QBrush& brush)
             item->setLine(v1.x*sizeMultiplier, v1.y*-sizeMultiplier,
                           v2.x*sizeMultiplier, v2.y*-sizeMultiplier);
             addToGroup(item);
-            q_b2FixtureManager.insertMulti(qb2Fixture, item);
+            q_b2FixtureManager.insert(qb2Fixture, item);
         }
     } break;
     default:

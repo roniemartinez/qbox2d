@@ -4,6 +4,7 @@
 #include <QGraphicsItemGroup>
 #include <QPainter>
 #include <QHash>
+#include <QGraphicsScene>
 #include <Box2D/Collision/Shapes/b2Shape.h>
 #include <Box2D/Collision/Shapes/b2ChainShape.h>
 #include <Box2D/Collision/Shapes/b2CircleShape.h>
@@ -35,6 +36,11 @@ public:
         setPos(position.x*sizeMultiplier, position.y*-sizeMultiplier);
         if (!qFuzzyCompare(rotation(), newRotation))
             setRotation(newRotation);
+        if (isSelected()) {
+            painter->setBrush(Qt::transparent);
+            painter->setPen(Qt::DashLine);
+            painter->drawRect(childrenBoundingRect());
+        }
     }
     b2Body* body() {
         return q_b2Body;
@@ -44,7 +50,9 @@ public:
     b2Fixture* createFixture(const b2FixtureDef* def, const QBrush &brush = QBrush(Qt::green));
     void destroyFixture (b2Fixture *fixture) {
         removeFromGroup(q_b2FixtureManager[fixture]);
+        scene()->removeItem(q_b2FixtureManager[fixture]);
         q_b2FixtureManager.remove(fixture);
+        q_b2Body->DestroyFixture(fixture);
     }
     void setTransform(const b2Vec2 &position, float32 angle) {
         q_b2Body->SetTransform(position,angle);
@@ -73,6 +81,22 @@ public:
     b2Vec2 getLocalPoint (const b2Vec2 &worldPoint) const {
         return q_b2Body->GetLocalPoint(worldPoint);
     }
+    void setAngularVelocity(float32 omega) {
+        q_b2Body->SetAngularVelocity(omega);
+    }
+    float32 getAngularVelocity() const {
+        return q_b2Body->GetAngularVelocity();
+    }
+    void applyAngularImpulse(float32 impulse) {
+        q_b2Body->ApplyAngularImpulse(impulse);
+    }
+    void setAwake(bool flag) {
+        q_b2Body->SetAwake(flag);
+    }
+    bool isAwake() const {
+        return q_b2Body->IsAwake();
+    }
+
 signals:
     
 public slots:

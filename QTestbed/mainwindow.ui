@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>610</width>
-    <height>565</height>
+    <width>643</width>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>610</width>
+     <width>643</width>
      <height>21</height>
     </rect>
    </property>
@@ -34,6 +34,12 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -46,7 +52,7 @@
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="topMargin">
       <number>9</number>
@@ -58,6 +64,9 @@
       <widget class="QComboBox" name="testComboBox">
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
        </property>
        <item>
         <property name="text">
@@ -72,6 +81,51 @@
        <item>
         <property name="text">
          <string>VaryingRestitution</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Gears</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>CharacterCollision</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cantilever</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TheoJansen</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bullet Test</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tumbler</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Car</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Vertical Stack</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Web</string>
         </property>
        </item>
       </widget>
@@ -95,7 +149,7 @@
        <item>
         <widget class="QSpinBox" name="velSpinBox">
          <property name="minimum">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="maximum">
           <number>999999999</number>
@@ -118,6 +172,9 @@
        </item>
        <item>
         <widget class="QSpinBox" name="posSpinBox">
+         <property name="minimum">
+          <number>1</number>
+         </property>
          <property name="maximum">
           <number>999999999</number>
          </property>
@@ -139,6 +196,9 @@
        </item>
        <item>
         <widget class="QDoubleSpinBox" name="hertzDoubleSpinBox">
+         <property name="minimum">
+          <double>1.000000000000000</double>
+         </property>
          <property name="maximum">
           <double>999999999.000000000000000</double>
          </property>

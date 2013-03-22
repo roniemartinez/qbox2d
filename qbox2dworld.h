@@ -39,13 +39,13 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
 #include "qbox2dcommon.h"
 #include "qbox2dbody.h"
-
+#include "qbox2djoint.h"
 
 class QBox2DWorld : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit QBox2DWorld(const b2Vec2 &gravity, QObject *parent = 0);
+    explicit QBox2DWorld(const b2Vec2 &gravity = b2Vec2(0,0), QObject *parent = 0);
     ~QBox2DWorld() {
         delete q_b2World;
     }
@@ -59,14 +59,16 @@ public:
     }
 
     QBox2DBody* createBody(const b2BodyDef *qb2BodyDef);
-    void destroyBody(b2Body *qb2Body) {
-        q_b2World->DestroyBody(qb2Body);
+    void destroyBody(QBox2DBody *qb2Body) {
+        removeItem(qb2Body);
+        q_bodyManager.remove(qb2Body->body());
+        q_b2World->DestroyBody(qb2Body->body());
     }
-    b2Joint* createJoint (const b2JointDef *def) {
-        return q_b2World->CreateJoint(def);
-    }
-    void destroyJoint (b2Joint *joint) {
-        q_b2World->DestroyJoint(joint);
+    QBox2DJoint* createJoint (const b2JointDef *def);
+    void destroyJoint (QBox2DJoint *qb2Joint) {
+        removeItem(qb2Joint);
+        q_jointManager.remove(qb2Joint->joint());
+        q_b2World->DestroyJoint(qb2Joint->joint());
     }
     b2Vec2 getGravity() {
         return q_b2World->GetGravity();
@@ -179,30 +181,15 @@ public:
     bool isRunning() {
         return q_isRunning;
     }
-    void step() {
+    virtual void step() {
         q_b2World->Step(q_timeStep, q_velocityIterations, q_positionIterations);
 
-        QList<b2Joint*> jointList = getJointList();
-        foreach (b2Joint* joint, jointList) {
-            if (jointManager.contains(joint)) {
-                removeItem(jointManager[joint]);
-                jointManager.remove(joint);
-            }
-            //FIXME: there are lines (joints) in the testbed example that
-            //cannot be visualized in QBox2DWorld
-            QGraphicsLineItem* line = new QGraphicsLineItem;
-            addItem(line);
-            b2Vec2 a = joint->GetAnchorA();
-            b2Vec2 b = joint->GetAnchorB();
-            line->setLine(a.x*sizeMultiplier,a.y*-sizeMultiplier,
-                          b.x*sizeMultiplier, b.y*-sizeMultiplier);
-            jointManager.insertMulti(joint, line);
-        }
-        //update is required so that all QBox2DBody and the like will repaint
+        //update is required so that all QBox2DBody, QBox2DJoint, etc will repaint
         update();
     }
 
 signals:
+    void showText(QString text);
 
 public slots:
     void simulate(bool flag) {
@@ -217,10 +204,14 @@ protected:
 private:
     b2World *q_b2World;
     int q_timerId;
-    QHash<b2Joint*, QGraphicsLineItem*> jointManager;
     float32 q_timeStep;
-    int32 q_velocityIterations, q_positionIterations;
+    int32 q_velocityIterations;
+    int32 q_positionIterations;
+
     bool q_isRunning;
+
+    QHash<b2Joint*, QGraphicsLineItem*> q_jointManager;
+    QHash<b2Body*, QBox2DBody*> q_bodyManager;
 };
 
 #endif // QBOX2DWORLD_H

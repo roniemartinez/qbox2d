@@ -19,7 +19,7 @@ First program I coded
 
 https://www.dropbox.com/s/itdj4b4s0aagfex/QBox2D.exe
 
-QTestbed (incomplete implementation of Testbed)
+QTestbed (incomplete implementation of Testbed)... WARNING! The "mythical" mousejoint implementation is not yet supported
 
 https://www.dropbox.com/s/evvbyfr4a1ryxxf/QTestbed.exe
 

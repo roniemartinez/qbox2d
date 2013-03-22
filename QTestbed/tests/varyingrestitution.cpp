@@ -1,7 +1,7 @@
 #include "varyingrestitution.h"
 
 VaryingRestitution::VaryingRestitution(const b2Vec2 &gravity, QObject *parent) :
-    QBox2DWorld(gravity, parent)
+    QBox2DTest(gravity, parent)
 {
     //modified codes taken from Varying Restitution example
     {

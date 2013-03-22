@@ -11,6 +11,16 @@
 #include "tests/varyingfriction.h"
 #include "tests/tiles.h"
 #include "tests/varyingrestitution.h"
+#include "tests/gears.h"
+#include "tests/charactercollision.h"
+#include "tests/cantilever.h"
+#include "tests/theojansen.h"
+#include "tests/bullettest.h"
+#include "tests/tumbler.h"
+#include "tests/car.h"
+#include "tests/verticalstack.h"
+#include "tests/web.h"
+#include "tests/shapeediting.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +35,8 @@ public:
     ~MainWindow();
     
 private slots:
+    void generateWorld(int index);
+
     void on_testComboBox_currentIndexChanged(int index);
 
     void on_velSpinBox_valueChanged(int arg1);
@@ -45,6 +57,8 @@ private slots:
 
     void on_subSteppingCheckBox_clicked(bool checked);
 
+protected:
+    void keyPressEvent(QKeyEvent *ev);
 private:
     Ui::MainWindow *ui;
     QBox2DView* q_view;

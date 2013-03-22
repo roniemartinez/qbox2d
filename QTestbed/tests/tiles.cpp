@@ -1,7 +1,7 @@
 #include "tiles.h"
 
 Tiles::Tiles(const b2Vec2 &gravity, QObject *parent) :
-    QBox2DWorld(gravity, parent)
+    QBox2DTest(gravity, parent)
 {
     //modified codes taken from Tile example
     //FIXME: has performance problem when "warm starting" is unchecked due to many repaints

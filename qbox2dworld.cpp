@@ -23,16 +23,24 @@ QBox2DWorld::QBox2DWorld(const b2Vec2 &gravity, QObject *parent) :
     q_b2World = new b2World(gravity);
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setBackgroundBrush(Qt::white);
-    q_timeStep = timeStep;
-    q_velocityIterations = velocityIterations;
-    q_positionIterations = positionIterations;
 }
 
 QBox2DBody* QBox2DWorld::createBody(const b2BodyDef *qb2BodyDef)
 {
     QBox2DBody* qb2Body = new QBox2DBody(q_b2World->CreateBody(qb2BodyDef));
     addItem(qb2Body);
+    q_bodyManager.insert(qb2Body->body(), qb2Body);
     return qb2Body;
+}
+
+QBox2DJoint* QBox2DWorld::createJoint(const b2JointDef *qb2JointDef)
+{
+    //WARNING: some joints cannot be "visualized" in QBox2DJoint as there are no convenient
+    //ways to return them like GetAnchorA(), GetAnchorB()
+    QBox2DJoint* qb2Joint = new QBox2DJoint(q_b2World->CreateJoint(qb2JointDef));
+    addItem(qb2Joint);
+    q_jointManager.insert(qb2Joint->joint(), qb2Joint);
+    return qb2Joint;
 }
 
 QList<b2Body*> QBox2DWorld::getBodyList()

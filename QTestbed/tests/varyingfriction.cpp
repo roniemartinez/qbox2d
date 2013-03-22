@@ -1,7 +1,7 @@
 #include "varyingfriction.h"
 
 VaryingFriction::VaryingFriction(const b2Vec2 &gravity, QObject *parent) :
-    QBox2DWorld(gravity, parent)
+    QBox2DTest(gravity, parent)
 {
 
     //modified codes taken from Varying Friction example
